@@ -1,0 +1,104 @@
+<style>
+
+  .so-tab {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 25px 0;
+  }
+
+  .so-tab label {
+    position: relative;
+    display: block;
+    padding: 0 25px 0 0;
+    margin-bottom: 15px;
+    line-height: normal;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .so-tab input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .so-tab-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s;
+  }
+
+  /* :checked */
+  .so-tab input:checked ~ .so-tab-content {
+    max-height: none;
+  }
+
+  /* Icon */
+  .so-tab label::after {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    display: block;
+    width: 3em;
+    height: 3em;
+    line-height: 3;
+    text-align: center;
+    -webkit-transition: all .35s;
+    -o-transition: all .35s;
+    transition: all .35s;
+  }
+
+  .so-tab input[type=checkbox] + label::after {
+    content: "+";
+  }
+
+  .so-tab input[type=radio] + label::after {
+    content: "\25BC";
+  }
+
+  .so-tab input[type=checkbox]:checked + label::after {
+    transform: rotate(315deg);
+  }
+
+  .so-tab input[type=radio]:checked + label::after {
+    transform: rotateX(180deg);
+  }
+
+  </style>
+
+  <div class="so-accordion-wrapper">
+    {% for block in section.blocks %}
+    <div class="so-tab">
+      <input id="so-tab-{{ block.id }}" type="checkbox" name="tabs" />
+      <label for="so-tab-{{ block.id }}">{{ block.settings.question }}</label>
+      <div class="so-tab-content">
+        <p>{{ block.settings.answer }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  {% schema %}
+    {
+      "name": "FAQs",
+      "blocks": [
+        {
+          "type": "faq",
+          "name": "FAQ",
+          "settings": [
+            {
+              "type": "text",
+              "id": "question",
+              "label": "Question"
+            },
+            {
+              "type": "textarea",
+              "id": "answer",
+              "label": "Answer"
+            }
+          ]
+        }
+      ]
+    }
+  {% endschema %}
